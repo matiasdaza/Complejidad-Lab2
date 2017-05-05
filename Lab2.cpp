@@ -76,7 +76,7 @@ int main(void){
        	Entrada>>aux[1];
        	Entrada>>aux[2];
        	Entrada>>aux[3];
-       	aux[4];'\n';
+       	aux[4]='\n';
 
        	Salida<<aux;
        	aux[0]=aux[1];
