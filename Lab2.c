@@ -6,6 +6,12 @@ int main(void){
     int i, x;
     char opc;
 	FILE *archivo=NULL;
+    printf("\n\n");
+    printf("Opción 1: Archivo_1.tex \n");
+    printf("Opción 2: Archivo_2.tex \n");
+    printf("Opción 3: Archivo_3.tex \n");
+    printf("\n\n");
+
     printf("\n Elija el archivo con el que desea trabajar: ");
     scanf("%c", &opc);
     if(opc=='1'){
