@@ -96,7 +96,7 @@ void quicksort(unsigned int **datos, int inicio, int fin){
   }
 }
 
-void mayor_frecuencia(unsigned int largo, unsigned int **datos){
+void frecuencia_mayor(unsigned int largo, unsigned int **datos){
   int i;
   for(i=largo;i>=0;i--){
     cout<<datos[i][0]<<" "<<datos[i][1];
@@ -106,13 +106,24 @@ void mayor_frecuencia(unsigned int largo, unsigned int **datos){
   }
 }
 
+void frecuencia(unsigned int largo, unsigned int **datos){
+ int i;
+ for(i=largo;i>=0;i--){
+    if(datos[i][1]==1){
+      break;
+    }
+    cout<<hex<<datos[i][0]<<" "<<datos[i][1]<<endl;
+  }
+
+}
+
 int main(void){
       
     nodo * lista = NULL;
     nodo * auxl;
 
     unsigned int ** datos;
-    unsigned int i=0, n, j, k;
+    unsigned int i, n, j,k,l;
     char opc, aux[5];
     cout<<"\n\n";
     cout<<"Opción 1: Archivo_1.tex"<<endl;
@@ -181,14 +192,14 @@ int main(void){
         quicksort(datos,0,k-1);
 
         cout<<"\n Los números que más se repiten son: ";
-        mayor_frecuencia(k-1, datos);
+        frecuencia_mayor(k-1, datos);
         cout<<endl;
       
 
     }
     if(opc=='2'){
-        ifstream Entrada ("archivo_1.tex"); 
-      ofstream Salida ("Salida.txt");
+      ifstream Entrada ("archivo_2.tex"); 
+      ofstream Salida ("Salida2.txt");
       ifstream AuxIn;
        
         //Primer serie de 4 números
@@ -199,7 +210,8 @@ int main(void){
         Entrada>>aux[3];
         aux[4];'\n';
 
-        Salida<<aux;
+        Salida<<aux<<endl;
+
         aux[0]=aux[1];
         aux[1]=aux[2];
         aux[2]=aux[3];
@@ -207,7 +219,7 @@ int main(void){
         // Ahora para el resto
 
         while(Entrada>>aux[3]){ //Cuando el archivo esté desde la tercera posición en adelante
-          Salida<<aux;
+          Salida<<aux<<endl;
           aux[0]=aux[1];
           aux[1]=aux[2];
           aux[2]=aux[3];
@@ -215,12 +227,40 @@ int main(void){
         Entrada.close();
         Salida.close();
 
-        AuxIn.open("Salida.txt");
-        while(AuxIn>>n){
+        i=0;
+        AuxIn.open("Salida2.txt");
+        while(AuxIn>>hex>>n){
           crear_lista(lista, i, n);
         }
         AuxIn.close();
+
+       
+        datos=new unsigned int*[i];
+        for(j=0;j<i;j++){
+          datos[j]=new unsigned int[2];
+        }
+
+        j=0;
+
+        //Se copia la lista a un arreglo para luego eliminar la lista.
+        while(lista){
+          auxl=lista;
+          lista=lista->sig;
+          datos[j][0]=auxl->numero;
+          datos[j][1]=auxl->repeticiones;
+          j++;
+          delete auxl;
+          
+        }
+        
+        quicksort(datos,0,i-1);
+
+        cout<<"\n Los números que más se repiten son: "<<endl<<endl;
+        frecuencia(i-1, datos);
+        cout<<endl;
+
     }
+
     if(opc=='3'){
         ifstream Entrada ("archivo_1.tex"); 
       ofstream Salida ("Salida.txt");
@@ -255,5 +295,7 @@ int main(void){
           crear_lista(lista, i, n);
         }
         AuxIn.close();
+
+
     }
 }
