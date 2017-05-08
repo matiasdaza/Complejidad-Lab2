@@ -119,6 +119,22 @@ void frecuencia(unsigned int largo, unsigned int **datos){ // se muestra y obtie
 
 
 }
+void frecuencia_6(unsigned largo, unsigned int **datos){
+    int i;
+    bool flag=false;
+
+    for(i=largo;i>=0;i--){
+        if(datos[i][1]==1){
+            break;
+        }
+        cout<<datos[i][0]<<" "<<datos[i][1]<<endl;
+        flag = true;
+    }
+    if (flag == false)
+      cout<<"no hay nada"<<endl;
+
+
+}
 
 
 int main(void){
@@ -126,7 +142,7 @@ int main(void){
     nodo * lista = NULL;
     nodo * auxl;
 
-    unsigned int ** datos;
+    unsigned int **datos;
     unsigned int i=0, n, j, k, l = 0;
     char opc, aux[5];
     cout<<"\n\n";
@@ -200,7 +216,8 @@ int main(void){
         cout<<endl;
       
 
-    }else if(opc=='2'){
+    }
+    if(opc=='2'){
       ifstream Entrada("archivo_2.tex");
       ofstream Salida("Salida2.txt");
       ifstream AuxIn;
@@ -259,39 +276,52 @@ int main(void){
         cout<<"\nLos numeros que se repiten son:"<<endl<<endl;
         frecuencia(l-1,datos);
 
-    }else if(opc=='3'){
-        ifstream Entrada ("archivo_1.tex"); 
-      ofstream Salida ("Salida.txt");
+    }if(opc=='3'){
+      ifstream Entrada("archivo_3.tex"); //ver archivo entrada
+      ofstream Salida("Salida3.txt");
       ifstream AuxIn;
+      char aux3[7]="";
        
-        //Primer serie de 4 números
+         //Primer serie de 4 números
 
-        Entrada>>aux[0];
-        Entrada>>aux[1];
-        Entrada>>aux[2];
-        Entrada>>aux[3];
-        aux[4];'\n';
-
-        Salida<<aux;
-        aux[0]=aux[1];
-        aux[1]=aux[2];
-        aux[2]=aux[3];
-
-        // Ahora para el resto
-
-        while(Entrada>>aux[3]){ //Cuando el archivo esté desde la tercera posición en adelante
-          Salida<<aux;
-          aux[0]=aux[1];
-          aux[1]=aux[2];
-          aux[2]=aux[3];
+        while( Entrada.read(aux3,sizeof(aux3)-1) ){ //separa en segmentos de largo 6 y se ingresan al archivo auxiliar
+          Salida<<aux3<<endl;
         }
         Entrada.close();
         Salida.close();
 
-        AuxIn.open("Salida.txt");
+        AuxIn.open("Salida3.txt");
         while(AuxIn>>n){
           crear_lista(lista, i, n);
         }
+
         AuxIn.close();
-    }
+  
+        //Se crea el arreglo datos para copiar lo de lista (Con el mismo tamaño de esta)
+        datos=new unsigned int*[i];
+        for(j=0;j<i;j++){
+          datos[j]=new unsigned int[2];
+        }
+
+        j=0;
+
+        //Se copia la lista a un arreglo para luego eliminar la lista.
+        while(lista){
+          auxl=lista;
+          lista=lista->sig;
+          datos[j][0]=auxl->numero;
+          datos[j][1]=auxl->repeticiones;
+          delete auxl;
+          j++;
+        }
+
+        k=i;
+
+        quicksort(datos,0,k-1);
+        frecuencia_6(k-1, datos);
+
+        cout<<endl;
+      }
+      
+
 }
